@@ -1,3 +1,13 @@
+"""
+Global variables
+"""
+my_weights = [0, 0, 0, 0] # List of the users rep weights
+my_exercises = ["benchpress", "squat", "deadlift", "military press"]
+my_sets = []
+
+"""
+functions
+"""
 
 def welcome():
     print("Welcome to the number one gym app! \n") #Welcomes user
@@ -8,7 +18,10 @@ def ready():
     if ready == "y":
         return True
 
-def repweight(max_weight): #Defines % of max rep weight that should be used for reps according to science
+def repstrenght(max_weight): #Defines % of max rep weight that should be used for reps according to science
+    return max_weight * 0.85
+
+def rephypertrophy(max_weight):
     return max_weight * 0.7
 
 def feel(feeling): #Asks the user how the excercise felt and returns 1 if the user felt like it went well
@@ -44,18 +57,25 @@ def lower_weight(weight): #Asks the user if the want to decrease the weight if t
 def setup_and_app(): 
     answer = input("Would you like to create a new workout program? y/n ")
     if answer == "y":
-        for y in range(4):
-            max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
-            my_weights[y] = round(repweight(max))
+        answer = input("Would you like to train for strenght or hypertrohpy (muscle building)? Please answear with either \"strenght\" or \"hypertrophy\" ")
+        if answer == "strenght": 
+            for y in range(4):
+                max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
+                my_weights[y] = round(repstrenght(max))
+            my_sets.append("4x4")
+        elif answer == "hypertrophy":
+            for y in range(4):
+                max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
+                my_weights[y] = round(rephypertrophy(max))
+            my_sets.append("4x8")
         training_app()
     else:
         print("I can't help you if you don't want to create a program")
 
 def training_app(): 
     while ready():
-
         for i in range(4):
-            print("\nYour", my_exercises[i], "sets are 4x8 at", round(int(my_weights[i])), "kg \n")
+            print("\nYour", my_exercises[i], "sets are", my_sets[0], "at", round(int(my_weights[i])), "kg \n")
             done = input("Are you done with your " + my_exercises[i] + "? y/n ")
             if done == "y":
                 print("\nWell done! \n")
@@ -69,8 +89,9 @@ def training_app():
                 print("\nYou\'ve got to work harder!")
 
 
-my_weights = [0, 0, 0, 0] # List of the users rep weights
-my_exercises = ["benchpress", "squat", "deadlift", "military press"]
+"""
+Program running
+"""
 
 welcome()
 
@@ -83,5 +104,3 @@ setup_and_app()
 
 
             
-
-
