@@ -1,5 +1,5 @@
 """
-Global variables
+Global variables for program setup
 """
 my_weights = [0, 0, 0, 0] # List of the users rep weights
 my_exercises = ["benchpress", "squat", "deadlift", "military press"]
@@ -18,17 +18,17 @@ def ready():
     if ready == "y":
         return True
 
-def repstrenght(max_weight): #Defines % of max rep weight that should be used for reps according to science
+def rep_strenght(max_weight): #Defines % of max rep weight that should be used for reps according to science
     return max_weight * 0.85
 
-def rephypertrophy(max_weight):
+def rep_hypertrophy(max_weight):
     return max_weight * 0.7
 
-def reptoning(max_weight):
+def rep_toning(max_weight):
     return max_weight * 0.55
 
 def excercise_type():
-    answer = input("Would you like to train for strenght, toning or hypertrohpy (muscle building)? Please answear with either \"strenght\", \"hypertrophy\" or \"toning\" ")
+    answer = input("Would you like to train for strenght, toning or hypertrohpy (muscle building)? Please answear with either \"strenght\", \"hypertrophy\" or \"toning\" ").lower()
     if answer == "strenght": 
         weight_setup_strenght()
     elif answer == "hypertrophy":
@@ -43,19 +43,19 @@ def excercise_type():
 def weight_setup_strenght():
     for y in range(4):
         max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
-        my_weights[y] = round(repstrenght(max))
+        my_weights[y] = round(rep_strenght(max))
     my_sets.append("4x4")
 
 def weight_setup_hypertrophy():
     for y in range(4):
         max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
-        my_weights[y] = round(rephypertrophy(max))
+        my_weights[y] = round(rep_hypertrophy(max))
     my_sets.append("4x8")
 
 def weight_setup_toning():
     for y in range(4):
         max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
-        my_weights[y] = round(reptoning(max))
+        my_weights[y] = round(rep_toning(max))
     my_sets.append("4x16")
 
 
@@ -127,6 +127,5 @@ setup_and_app()
 
 
             
-
 
             

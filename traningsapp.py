@@ -1,5 +1,5 @@
 """
-Global variables
+Global variables for program setup
 """
 my_weights = [0, 0, 0, 0] # List of the users rep weights
 my_exercises = ["benchpress", "squat", "deadlift", "military press"]
@@ -18,11 +18,47 @@ def ready():
     if ready == "y":
         return True
 
-def repstrenght(max_weight): #Defines % of max rep weight that should be used for reps according to science
+def rep_strenght(max_weight): #Defines % of max rep weight that should be used for reps according to science
     return max_weight * 0.85
 
-def rephypertrophy(max_weight):
+def rep_hypertrophy(max_weight):
     return max_weight * 0.7
+
+def rep_toning(max_weight):
+    return max_weight * 0.55
+
+def excercise_type():
+    answer = input("Would you like to train for strenght, toning or hypertrohpy (muscle building)? Please answear with either \"strenght\", \"hypertrophy\" or \"toning\" ").lower()
+    if answer == "strenght": 
+        weight_setup_strenght()
+    elif answer == "hypertrophy":
+        weight_setup_hypertrophy()
+    elif answer == "toning":
+        weight_setup_toning()
+    else:
+        print("You have to choose either strenght, hypertropy or toning")
+        excercise_type()
+
+
+def weight_setup_strenght():
+    for y in range(4):
+        max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
+        my_weights[y] = round(rep_strenght(max))
+    my_sets.append("4x4")
+
+def weight_setup_hypertrophy():
+    for y in range(4):
+        max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
+        my_weights[y] = round(rep_hypertrophy(max))
+    my_sets.append("4x8")
+
+def weight_setup_toning():
+    for y in range(4):
+        max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
+        my_weights[y] = round(rep_toning(max))
+    my_sets.append("4x16")
+
+
 
 def feel(feeling): #Asks the user how the excercise felt and returns 1 if the user felt like it went well
     if feeling <= 2:
@@ -38,7 +74,7 @@ def raise_weight(weight): # Asks the user if they want to increase the weight if
     y = str(input("\nWould you like to raise the weight? y/n "))
     if y == "y":
         weight = weight + 5
-        print("\nYour new rep weight is", weight)
+        print("\nYour new rep weight is", weight, "kg")
         return weight
     else:
         print("\nOk, we will keep the weight the same")
@@ -48,7 +84,7 @@ def lower_weight(weight): #Asks the user if the want to decrease the weight if t
     y = str(input("\nWould you like to decrease the weight? y/n "))
     if y == "y":
         weight = weight - 5
-        print("\nYour new rep weight is", weight)
+        print("\nYour new rep weight is", weight, "kg")
         return weight
     else:
         print("\nOk, we will keep the weight the same")
@@ -57,17 +93,7 @@ def lower_weight(weight): #Asks the user if the want to decrease the weight if t
 def setup_and_app(): 
     answer = input("Would you like to create a new workout program? y/n ")
     if answer == "y":
-        answer = input("Would you like to train for strenght or hypertrohpy (muscle building)? Please answear with either \"strenght\" or \"hypertrophy\" ")
-        if answer == "strenght": 
-            for y in range(4):
-                max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
-                my_weights[y] = round(repstrenght(max))
-            my_sets.append("4x4")
-        elif answer == "hypertrophy":
-            for y in range(4):
-                max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
-                my_weights[y] = round(rephypertrophy(max))
-            my_sets.append("4x8")
+        excercise_type()
         training_app()
     else:
         print("I can't help you if you don't want to create a program")
@@ -98,9 +124,6 @@ welcome()
 setup_and_app()
 
 
-
-
-            
 
 
             
