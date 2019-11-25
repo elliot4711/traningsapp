@@ -8,7 +8,7 @@ my_sets = []
 """
 functions
 """
-import formulas.pkg
+from formulas import rep_hypertrophy, rep_strenght, rep_toning
 
 def welcome():
     print("Welcome to the number one gym app! \n") #Welcomes user
