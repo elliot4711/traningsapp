@@ -19,7 +19,7 @@ def is_ready():
     return ans == "y"
 
 def excercise_type():
-    ans = input("Would you like to train for strenght, toning or hypertrohpy (muscle building)? Please answear with either \"strenght\", \"hypertrophy\" or \"toning\" ").lower()
+    ans = input("Would you like to train for strenght, toning or hypertrophy (muscle building)? Please answear with either \"strenght\", \"hypertrophy\" or \"toning\" ").lower()
     if ans == "strenght": 
         weight_setup_strenght()
     elif ans == "hypertrophy":
@@ -114,9 +114,5 @@ setup_and_app()
 
 
 
-
-            
-
-            
 
             

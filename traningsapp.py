@@ -3,13 +3,25 @@ Global variables for program setup
 """
 my_weights = [0, 0, 0, 0] # List of the users rep weights
 my_exercises = ["benchpress", "squat", "deadlift", "military press"]
-my_sets = []
+my_sets = [0]
 
 """
 functions
 """
 from formulas import rep_hypertrophy, rep_strenght, rep_toning
 
+import csv
+
+
+"""
+returns_path = "/Users/elliotstjernqvist/Dokument/Skola/Programmering_1/Python/traningsapp/traningsapp_data.csv"
+file = open(returns_path, "w")
+writer = csv.writer(file)
+"""
+"""
+writer.writerow(["sets", "benchpress reps", "squat reps", "deadlift reps", "military press reps"])
+writer.writerow(["4x8", 70, 100, 155, 40])
+"""
 def welcome():
     print("Welcome to the number one gym app! \n") #Welcomes user
     print("Let\'s get started with creating your program: \n")
@@ -18,8 +30,25 @@ def is_ready():
     ans = input("Are you ready to start your workout? y/n ")
     return ans == "y"
 
+def save_system():
+    ans = input("Do you want to create a new workout or use your most recent workout (only do this if you have completed the setup before)? please answear \"new\" or \"load\"  ")
+    if ans == "new":
+        setup_and_app()
+    elif ans == "load":
+        path = "/Users/elliotstjernqvist/Dokument/Skola/Programmering_1/Python/traningsapp/traningsapp_data.csv"
+        file = open(path, newline='')
+        reader = csv.reader(file)
+        my_exercises = next(reader)
+        for row in reader:
+            my_sets = row[0]
+            my_weights[0] = float(row[1])
+            my_weights[1] = float(row[2])
+            my_weights[2] = float(row[3])
+            my_weights[3] = float(row[4])
+        training_app()
+
 def excercise_type():
-    ans = input("Would you like to train for strenght, toning or hypertrohpy (muscle building)? Please answear with either \"strenght\", \"hypertrophy\" or \"toning\" ").lower()
+    ans = input("Would you like to train for strenght, toning or hypertrophy (muscle building)? Please answear with either \"strenght\", \"hypertrophy\" or \"toning\" ").lower()
     if ans == "strenght": 
         weight_setup_strenght()
     elif ans == "hypertrophy":
@@ -110,8 +139,7 @@ Program running
 
 welcome()
 
-setup_and_app()
-
+save_system()
 
 
 
