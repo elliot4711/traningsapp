@@ -38,9 +38,15 @@ def save_system():
         path = "/Users/elliotstjernqvist/Dokument/Skola/Programmering_1/Python/traningsapp/traningsapp_data.csv"
         file = open(path, newline='')
         reader = csv.reader(file)
-        my_exercises = next(reader)
+        temp = str(next(reader))
+        temp = temp.split(",")
+        for y in range(len(temp)-1):
+            my_exercises[y] = temp[y+1]
+        print(my_exercises)
+        my_exercises.remove(" ' ")
+        print(my_exercises)
         for row in reader:
-            my_sets = row[0]
+            my_sets[0] = str(row[0])
             my_weights[0] = float(row[1])
             my_weights[1] = float(row[2])
             my_weights[2] = float(row[3])
