@@ -12,25 +12,15 @@ from formulas import rep_hypertrophy, rep_strenght, rep_toning
 
 import csv
 
-
-"""
-returns_path = "/Users/elliotstjernqvist/Dokument/Skola/Programmering_1/Python/traningsapp/traningsapp_data.csv"
-file = open(returns_path, "w")
-writer = csv.writer(file)
-"""
-"""
-writer.writerow(["sets", "benchpress reps", "squat reps", "deadlift reps", "military press reps"])
-writer.writerow(["4x8", 70, 100, 155, 40])
-"""
 def welcome():
     print("Welcome to the number one gym app! \n") #Welcomes user
     print("Let\'s get started with creating your program: \n")
 
 def is_ready(): 
-    ans = input("Are you ready to start your workout? y/n ")
-    return ans == "y"
+        ans = input("Are you ready to start your workout? y/n ")
+        return ans == "y"
 
-def save_system():
+def load_system():
     ans = input("Do you want to create a new workout or use your most recent workout (only do this if you have completed the setup before)? please answear \"new\" or \"load\"  ")
     if ans == "new":
         setup_and_app()
@@ -38,13 +28,10 @@ def save_system():
         path = "/Users/elliotstjernqvist/Dokument/Skola/Programmering_1/Python/traningsapp/traningsapp_data.csv"
         file = open(path, newline='')
         reader = csv.reader(file)
-        temp = str(next(reader))
-        temp = temp.split(",")
+        temp = next(reader)
         for y in range(len(temp)-1):
+            temp[y+1].replace("'", "")
             my_exercises[y] = temp[y+1]
-        print(my_exercises)
-        my_exercises.remove(" ' ")
-        print(my_exercises)
         for row in reader:
             my_sets[0] = str(row[0])
             my_weights[0] = float(row[1])
@@ -52,6 +39,13 @@ def save_system():
             my_weights[2] = float(row[3])
             my_weights[3] = float(row[4])
         training_app()
+
+def save_system():
+    returns_path = "/Users/elliotstjernqvist/Dokument/Skola/Programmering_1/Python/traningsapp/traningsapp_data.csv"
+    file = open(returns_path, "w")
+    writer = csv.writer(file)
+    writer.writerow(["sets", my_exercises[0], my_exercises[1], my_exercises[2], my_exercises[3]])
+    writer.writerow([my_sets[0], my_weights[0], my_weights[1], my_weights[2], my_weights[3]])
 
 def excercise_type():
     ans = input("Would you like to train for strenght, toning or hypertrophy (muscle building)? Please answear with either \"strenght\", \"hypertrophy\" or \"toning\" ").lower()
@@ -70,19 +64,19 @@ def weight_setup_strenght():
     for y in range(4):
         max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
         my_weights[y] = round(rep_strenght(max))
-    my_sets.append("4x4")
+    my_sets[0] = "4x4"
 
 def weight_setup_hypertrophy():
     for y in range(4):
         max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
         my_weights[y] = round(rep_hypertrophy(max))
-    my_sets.append("4x8")
+    my_sets[0] = "4x8"
 
 def weight_setup_toning():
     for y in range(4):
         max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
         my_weights[y] = round(rep_toning(max))
-    my_sets.append("4x16")
+    my_sets[0] = "4x16"
 
 
 
@@ -137,6 +131,9 @@ def training_app():
                     my_weights[i] = lower_weight(my_weights[i])
             else:
                 print("\nYou\'ve got to work harder!")
+        ans = input("Would you like to save this workout setup for later? y/n ")
+        if ans == "y":
+            save_system()
 
 
 """
@@ -145,7 +142,8 @@ Program running
 
 welcome()
 
-save_system()
+load_system()
+
 
 
 
