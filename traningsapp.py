@@ -14,14 +14,13 @@ import csv
 
 def welcome():
     print("Welcome to the number one gym app! \n") #Welcomes user
-    print("Let\'s get started with creating your program: \n")
 
 def is_ready(): 
         ans = input("Are you ready to start your workout? y/n ")
         return ans == "y"
 
 def load_system():
-    ans = input("Do you want to create a new workout or use your most recent workout (only do this if you have completed the setup before)? please answear \"new\" or \"load\"  ")
+    ans = input("Do you want to create a new workout or use your most recent workout (only do this if you have completed setup before)? please answear \"new\" or \"load\"  ")
     if ans == "new":
         setup_and_app()
     elif ans == "load":
@@ -39,6 +38,8 @@ def load_system():
             my_weights[2] = float(row[3])
             my_weights[3] = float(row[4])
         training_app()
+    else: 
+        load_system()
 
 def save_system():
     returns_path = "/Users/elliotstjernqvist/Dokument/Skola/Programmering_1/Python/traningsapp/traningsapp_data.csv"
@@ -59,7 +60,6 @@ def excercise_type():
         print("You have to choose either strenght, hypertropy or toning")
         excercise_type()
 
-
 def weight_setup_strenght():
     for y in range(4):
         max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
@@ -78,7 +78,12 @@ def weight_setup_toning():
         my_weights[y] = round(rep_toning(max))
     my_sets[0] = "4x16"
 
-
+def feel_input():
+    ans = input("How did that feel on a scale from 1-5? ")
+    while not ans.isdigit():
+        ans = input("How did that feel on a scale from 1-5? ")
+    ans = int(ans)
+    return ans
 
 def feel(feeling): #Asks the user how the excercise felt and returns 1 if the user felt like it went well
     if feeling <= 2:
@@ -108,6 +113,21 @@ def lower_weight(weight): #Asks the user if the want to decrease the weight if t
         print("\nOk, we will keep the weight the same")
     return weight
 
+def check_excercise(i): 
+    ans = input("Are you done with your " + my_exercises[i] + "? y/n ")
+    if ans == "y":
+        print("\nWell done! \n")
+        x = feel_input()
+        y = feel(x)
+        if y == 2:
+            my_weights[i] = raise_weight(my_weights[i])
+        elif y == 1:
+            my_weights[i] = lower_weight(my_weights[i])
+    elif ans == "n": 
+        print("\nYou\'ve got to work harder!")
+    else:
+        check_excercise(i)
+
 def setup_and_app(): 
     ans = input("Would you like to create a new workout program? y/n ")
     if ans == "y":
@@ -120,17 +140,7 @@ def training_app():
     while is_ready():
         for i in range(4):
             print("\nYour", my_exercises[i], "sets are", my_sets[0], "at", round(int(my_weights[i])), "kg \n")
-            ans = input("Are you done with your " + my_exercises[i] + "? y/n ")
-            if ans == "y":
-                print("\nWell done! \n")
-                x = int(input("How did that feel on a scale from 1-5? "))
-                y = feel(x)
-                if y == 2:
-                    my_weights[i] = raise_weight(my_weights[i])
-                elif y == 1:
-                    my_weights[i] = lower_weight(my_weights[i])
-            else:
-                print("\nYou\'ve got to work harder!")
+            check_excercise(i)
         ans = input("Would you like to save this workout setup for later? y/n ")
         if ans == "y":
             save_system()
