@@ -1,3 +1,5 @@
+EXERCISES = ["benchpress", "squat", "deadlift", "military press"]
+
 from formulas import rep_hypertrophy, rep_strenght, rep_toning
 
 import csv
@@ -7,72 +9,144 @@ def welcome():
 
 def main():
     welcome()
-    
-
-def load_system():
     ans = input("Do you want to create a new workout or use your most recent workout (only do this if you have completed setup before)? please answear \"new\" or \"load\"  ")
     if ans == "new":
-        setup_and_app()
+       my_weights, my_sets = setup_and_app(EXERCISES)
     elif ans == "load":
-        path = "/Users/elliotstjernqvist/Dokument/Skola/Programmering_1/Python/traningsapp/traningsapp_data.csv"
-        file = open(path, newline='')
-        reader = csv.reader(file)
-        temp = next(reader)
-        for y in range(len(temp)-1):
-            temp[y+1].replace("'", "")
-            my_exercises[y] = temp[y+1]
-        for row in reader:
-            my_sets[0] = str(row[0])
-            my_weights[0] = float(row[1])
-            my_weights[1] = float(row[2])
-            my_weights[2] = float(row[3])
-            my_weights[3] = float(row[4])
-    else: 
-        load_system()
+        my_weights, my_sets = load_system()
+    else:
+        my_weights, my_sets = load_system()
+    training_app(my_sets, my_weights)
 
-def setup_and_app(): 
+def load_system():
+    my_weights = [0, 0, 0, 0]
+    path = "/Users/elliotstjernqvist/Dokument/Skola/Programmering_1/Python/traningsapp/traningsapp_data.csv"
+    file = open(path, newline='')
+    reader = csv.reader(file)
+    _ = next(reader)
+    for row in reader:
+        my_sets = str(row[0])
+        my_weights[0] = float(row[1])
+        my_weights[1] = float(row[2])
+        my_weights[2] = float(row[3])
+        my_weights[3] = float(row[4])
+    return my_weights, my_sets
+
+def setup_and_app(EXERCISES): 
     ans = input("Would you like to create a new workout program? y/n ")
     if ans == "y":
-        excercise_type()
-        training_app()
+        my_weights, my_sets = excercise_type(EXERCISES)
+        return my_weights, my_sets
     else:
         print("I can't help you if you don't want to create a program")
 
-def training_app(): 
+def is_ready(): 
+    ans = input("Are you ready to start your workout? y/n ")
+    return ans == "y"
+
+def training_app(my_sets, my_weights): 
     while is_ready():
         for i in range(4):
-            print("\nYour", my_exercises[i], "sets are", my_sets[0], "at", round(int(my_weights[i])), "kg \n")
-            check_excercise(i)
+            print("\nYour", EXERCISES[i], "sets are", my_sets, "at", round(int(my_weights[i])), "kg \n")
+            check_excercise(my_weights, i)
         ans = input("Would you like to save this workout setup for later? y/n ")
         if ans == "y":
-            save_system()
+            save_system(my_sets, my_weights)
 
-def excercise_type():
+def check_excercise(my_weights, i): 
+    ans = input("Are you done with your " + EXERCISES[i] + "? y/n ")
+    if ans == "y":
+        print("\nWell done! \n")
+        x = feel_input()
+        y = feel(x)
+        if y == 2:
+            my_weights[i] = raise_weight(my_weights[i])
+        elif y == 1:
+            my_weights[i] = lower_weight(my_weights[i])
+    elif ans == "n": 
+        print("\nYou\'ve got to work harder!")
+    else:
+        check_excercise(my_weights, i)
+
+def excercise_type(EXERCISES):
     ans = input("Would you like to train for strenght, toning or hypertrophy (muscle building)? Please answear with either \"strenght\", \"hypertrophy\" or \"toning\" ").lower()
     if ans == "strenght": 
-        weight_setup_strenght()
+        my_weights, my_sets = weight_setup_strenght(EXERCISES)
+        return my_weights, my_sets
     elif ans == "hypertrophy":
-        weight_setup_hypertrophy()
+        my_weights, my_sets = weight_setup_hypertrophy(EXERCISES)
+        return my_weights, my_sets
     elif ans == "toning":
-        weight_setup_toning()
+        my_weights, my_sets = weight_setup_toning(EXERCISES)
+        return my_weights, my_sets
     else:
         print("You have to choose either strenght, hypertropy or toning")
-        excercise_type()
+        excercise_type(EXERCISES)
 
-def weight_setup_strenght():
+def weight_setup_strenght(EXERCISES):
+    my_weights = [0, 0, 0, 0]
     for y in range(4):
-        max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
+        max = int(input("Please enter your " + EXERCISES[y] + " max rep in kg: "))
         my_weights[y] = round(rep_strenght(max))
-    my_sets[0] = "4x4"
+    my_sets = "4x4"
+    return my_weights, my_sets
 
-def weight_setup_hypertrophy():
+def weight_setup_hypertrophy(EXERCISES):
+    my_weights = [0, 0, 0, 0]
     for y in range(4):
-        max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
+        max = int(input("Please enter your " + EXERCISES[y] + " max rep in kg: "))
         my_weights[y] = round(rep_hypertrophy(max))
-    my_sets[0] = "4x8"
+    my_sets = "4x8"
+    return my_weights, my_sets
 
-def weight_setup_toning():
+def weight_setup_toning(EXERCISES):
+    my_weights = [0, 0, 0, 0]
     for y in range(4):
-        max = int(input("Please enter your " + my_exercises[y] + " max rep in kg: "))
+        max = int(input("Please enter your " + EXERCISES[y] + " max rep in kg: "))
         my_weights[y] = round(rep_toning(max))
-    my_sets[0] = "4x16"
+    my_sets = "4x16"
+    return my_weights, my_sets
+
+def feel_input():
+    ans = input("How did that feel on a scale from 1-5? ")
+    while not ans.isdigit():
+        ans = input("How did that feel on a scale from 1-5? ")
+    ans = int(ans)
+    return ans
+
+def feel(feeling): #Asks the user how the excercise felt and returns 1 if the user felt like it went well
+    if feeling <= 2:
+        print("\nMaybe you should lower the weight")
+        return 1
+    elif feeling == 3:
+        print("\nYou should probably keep the weight the same")
+    else:
+        print("\nMaybe you should raise the weight")
+        return 2
+
+def raise_weight(weight): # Asks the user if they want to increase the weight if the function before has returned 2 which means the user felt it went well
+    ans = input("\nWould you like to raise the weight? y/n ")
+    if ans == "y":
+        weight = weight + 5
+        print("\nYour new rep weight is", weight, "kg")
+    else:
+        print("\nOk, we will keep the weight the same")
+    return weight
+
+def lower_weight(weight): #Asks the user if the want to decrease the weight if the function before has returned 1 which means the user felt it did not go well
+    ans = input("\nWould you like to decrease the weight? y/n ")
+    if ans == "y":
+        weight = weight - 5
+        print("\nYour new rep weight is", weight, "kg")
+    else:
+        print("\nOk, we will keep the weight the same")
+    return weight
+
+def save_system(my_sets, my_weights):
+    returns_path = "/Users/elliotstjernqvist/Dokument/Skola/Programmering_1/Python/traningsapp/traningsapp_data.csv"
+    file = open(returns_path, "w")
+    writer = csv.writer(file)
+    writer.writerow(["sets", EXERCISES[0], EXERCISES[1], EXERCISES[2], EXERCISES[3]])
+    writer.writerow([my_sets[0], my_weights[0], my_weights[1], my_weights[2], my_weights[3]])
+
+main()
