@@ -5,4 +5,5 @@
 The reset_data.py and the clear_data.py files are not required to run the program but it is recommended to download them aswell. If the csv reading function does not work as intended please try resetting the traningsapp_data.csv file to the standard format by simply running the reset_data.py file. If you wish to completely clear the traningsapp_data.csv file simply run the clear_data.py (This should never be needed as the program will simply update the old file whenever a save is requested but the functionality is provided for safe measure.)
 
 Creator : Elliot Stjernqvist
+
 Contact: elliot.stjernqvist@gmail.com
