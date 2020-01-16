@@ -8,15 +8,15 @@ def welcome():
     print("Welcome to the number one gym app! \n") #Welcomes user
 
 def main():
-    welcome()
+    welcome() # Setup
     ans = input("Do you want to create a new workout or use your most recent workout (only do this if you have completed setup before)? please answear \"new\" or \"load\"  ")
     if ans == "new":
-       my_weights, my_sets = setup_and_app(EXERCISES)
+       my_weights, my_sets = setup(EXERCISES)
     elif ans == "load":
         my_weights, my_sets = load_system()
     else:
         my_weights, my_sets = load_system()
-    training_app(my_sets, my_weights)
+    training_app(my_sets, my_weights) #Setup complete app begins running
 
 def load_system():
     my_weights = [0, 0, 0, 0]
@@ -32,7 +32,7 @@ def load_system():
         my_weights[3] = float(row[4])
     return my_weights, my_sets
 
-def setup_and_app(EXERCISES): 
+def setup(EXERCISES): 
     ans = input("Would you like to create a new workout program? y/n ")
     if ans == "y":
         my_weights, my_sets = excercise_type(EXERCISES)
@@ -57,11 +57,11 @@ def check_excercise(my_weights, i):
     ans = input("Are you done with your " + EXERCISES[i] + "? y/n ")
     if ans == "y":
         print("\nWell done! \n")
-        x = feel_input()
-        y = feel(x)
-        if y == 2:
+        ans = feel_input()
+        val = feel(ans)
+        if val == 2:
             my_weights[i] = raise_weight(my_weights[i])
-        elif y == 1:
+        elif val == 1:
             my_weights[i] = lower_weight(my_weights[i])
     elif ans == "n": 
         print("\nYou\'ve got to work harder!")
@@ -107,7 +107,7 @@ def weight_setup_toning(EXERCISES):
     my_sets = "4x16"
     return my_weights, my_sets
 
-def feel_input():
+def feel_input(): #Takes answer and validates if answer is acceptable for the program and if so returns it as a string
     ans = input("How did that feel on a scale from 1-5? ")
     while not ans.isdigit():
         ans = input("How did that feel on a scale from 1-5? ")
